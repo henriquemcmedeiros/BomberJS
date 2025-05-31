@@ -11,7 +11,7 @@ const players = {};
 const bombs = [];
 const explosions = [];
 
-// Defina paredes estáticas (bordas e internas)
+// paredes fixas
 const staticWalls = [];
 for (let i = 0; i < GRID_SIZE; i++) {
   staticWalls.push({ x: i, y: 0 });
