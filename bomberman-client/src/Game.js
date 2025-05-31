@@ -27,18 +27,17 @@ export default function Game() {
     canvas.width = width;
     canvas.height = height;
 
-    // fundo geral
+    // fundo
     ctx.fillStyle = '#f0f0f0';
     ctx.fillRect(0, 0, width, height);
 
-    // cabeçalho com título
+    // cabeçalho
     ctx.fillStyle = '#333';
     ctx.font = 'bold 20px sans-serif';
     const title = 'BomberJS';
     const textW = ctx.measureText(title).width;
     ctx.fillText(title, (width - textW) / 2, 20);
 
-    // desenha área de jogo abaixo do cabeçalho
     ctx.translate(0, HEADER_HEIGHT);
 
     // grid
@@ -48,26 +47,30 @@ export default function Game() {
       ctx.beginPath(); ctx.moveTo(0,i*CELL_SIZE); ctx.lineTo(GRID_SIZE*CELL_SIZE,i*CELL_SIZE); ctx.stroke();
     }
 
-    // paredes estáticas
+    // paredes fixas
     state.staticWalls.forEach(w=>{
       ctx.fillStyle='#666';
       ctx.fillRect(w.x*CELL_SIZE, w.y*CELL_SIZE, CELL_SIZE, CELL_SIZE);
     });
+    
     // paredes destrutíveis
     state.breakableWalls.forEach(w=>{
       ctx.fillStyle='#8b4513';
       ctx.fillRect(w.x*CELL_SIZE, w.y*CELL_SIZE, CELL_SIZE, CELL_SIZE);
     });
+    
     // explosões
     state.explosions.forEach(e=>{
       ctx.fillStyle='rgba(255,69,0,0.6)';
       ctx.fillRect(e.x*CELL_SIZE, e.y*CELL_SIZE, CELL_SIZE, CELL_SIZE);
     });
+    
     // bombas
     state.bombs.forEach(b=>{
       ctx.fillStyle='#000';
       ctx.beginPath(); ctx.arc(b.x*CELL_SIZE + CELL_SIZE/2, b.y*CELL_SIZE + CELL_SIZE/2, CELL_SIZE/4, 0, 2*Math.PI); ctx.fill();
     });
+    
     // jogadores
     Object.entries(state.players).forEach(([id,p])=>{
       if(p.dead) return;
@@ -75,7 +78,7 @@ export default function Game() {
       ctx.fillRect(p.x*CELL_SIZE+8, p.y*CELL_SIZE+8, CELL_SIZE-16, CELL_SIZE-16);
     });
 
-    // HUD de bomba
+    // HUD bomba
     const me = state.players[socketRef.current.id];
     if(me) {
       ctx.font='14px sans-serif'; ctx.fillStyle='#333';
@@ -83,7 +86,7 @@ export default function Game() {
       ctx.fillText(hud, 5, GRID_SIZE*CELL_SIZE - 5);
     }
 
-    // mensagem de morte
+    // mensagem morte
     if(dead) {
       ctx.font='24px sans-serif'; ctx.fillStyle='#333';
       ctx.fillText('Você morreu!', (GRID_SIZE*CELL_SIZE)/2 - 60, (GRID_SIZE*CELL_SIZE)/2);
