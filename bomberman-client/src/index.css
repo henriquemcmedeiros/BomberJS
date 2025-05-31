@@ -18,7 +18,6 @@ canvas {
   border: 2px solid #ddd;
 }
 
-/* Opcional: estilo para container caso use div envolvendo o canvas */
 .game-container {
   position: relative;
 }
